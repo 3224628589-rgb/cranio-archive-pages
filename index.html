@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#edf0e8" />
+    <meta name="description" content="匿名化 CT 颅颌面骨组织与软组织三维浏览器" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23111713'/%3E%3Cpath d='M5 16h7l3-8 3 16 3-8h6' fill='none' stroke='%231ee875' stroke-width='2'/%3E%3C/svg%3E" />
+    <title>C.A.R.E. // Craniofacial Archive 01</title>
+    <script type="module" crossorigin src="./assets/index-CrUYH8uG.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-unINOk0-.css">
+  </head>
+  <body>
+    <div id="boot" class="boot" aria-live="polite">
+      <div class="boot-grid"></div>
+      <div class="boot-orbit boot-orbit-a"></div>
+      <div class="boot-orbit boot-orbit-b"></div>
+      <div class="boot-core">
+        <svg class="care-mark" viewBox="0 0 92 92" aria-hidden="true">
+          <path d="M18 45h19L46 18l9 54 9-27h10" />
+          <circle cx="46" cy="46" r="37" />
+        </svg>
+        <p class="eyebrow">CRANIOFACIAL ANALYSIS RESEARCH ENVIRONMENT</p>
+        <h1>接入匿名影像档案</h1>
+        <div class="boot-terminal" id="bootTerminal"></div>
+        <div class="boot-progress"><span id="bootProgress"></span></div>
+        <button id="enterSystem" class="boot-enter" type="button">ENTER SYSTEM <span>↵</span></button>
+      </div>
+      <button id="skipBoot" class="boot-skip" type="button">SKIP // ESC</button>
+      <div class="boot-corner top-left">C.A.R.E / 01</div>
+      <div class="boot-corner bottom-right">PUBLIC WEB VIEWER · VISUALIZATION ONLY</div>
+    </div>
+
+    <main id="app" class="app" aria-hidden="true">
+      <div class="noise" aria-hidden="true"></div>
+      <header class="topbar">
+        <a class="identity" href="#" aria-label="返回默认视图">
+          <svg viewBox="0 0 46 46" aria-hidden="true"><path d="M8 23h10L23 8l5 30 5-15h6"/><circle cx="23" cy="23" r="19"/></svg>
+          <span><b>C.A.R.E.</b><small>BIOMORPHOLOGY TERMINAL</small></span>
+        </a>
+        <div class="record-title">
+          <span>ARCHIVE</span>
+          <strong>CRANIOFACIAL // CT-0412</strong>
+        </div>
+        <div class="system-state"><i></i><span>WEB / READY</span><time id="clock">00:00:00</time></div>
+      </header>
+
+      <aside class="index-rail" aria-label="档案层级">
+        <span class="rail-label">LAYER INDEX</span>
+        <button class="rail-item active" type="button" data-focus="all"><em>01</em><span>COMPOSITE</span></button>
+        <button class="rail-item" type="button" data-focus="bone"><em>02</em><span>OSSEOUS</span></button>
+        <button class="rail-item" type="button" data-focus="soft"><em>03</em><span>SOFT SHELL</span></button>
+        <button class="rail-item" type="button" data-focus="tmj"><em>04</em><span>TMJ LOCI</span></button>
+        <span class="rail-coord">0.3 MM / CT<br/>APR · 2026</span>
+      </aside>
+
+      <section class="viewport-shell" aria-label="三维医学模型">
+        <div id="viewer" class="viewer"></div>
+        <div class="viewer-grid" aria-hidden="true"></div>
+        <div class="reticle" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="scan-line" id="scanLine" aria-hidden="true"></div>
+        <div class="axis axis-x">X</div><div class="axis axis-y">Y</div><div class="axis axis-z">Z</div>
+
+        <div class="model-label label-right"><span>R</span><b>TMJ / RIGHT</b><small>CONDYLAR LOCUS</small></div>
+        <div class="model-label label-left"><span>L</span><b>TMJ / LEFT</b><small>CONDYLAR LOCUS</small></div>
+
+        <div id="loading" class="model-loading">
+          <span>RECONSTRUCTING SURFACE</span><b id="loadingPct">00%</b>
+          <i><em id="loadingBar"></em></i>
+        </div>
+
+        <div class="view-meta">
+          <span id="viewName">COMPOSITE VIEW</span>
+          <b>DRAG TO ROTATE · SCROLL TO SCALE</b>
+        </div>
+      </section>
+
+      <aside class="control-panel">
+        <div class="panel-head">
+          <span>SUBJECT ARCHIVE</span>
+          <b>ANON // 01</b>
+        </div>
+
+        <section class="data-block summary">
+          <p class="section-kicker">RECONSTRUCTION PROFILE</p>
+          <h2>颅颌面结构<br/><span>分层重建</span></h2>
+          <div class="spec-grid">
+            <span><small>SOURCE VOXEL</small><b>0.3 MM</b></span>
+            <span><small>WEB MESH</small><b>243.8 K</b></span>
+            <span><small>MODALITY</small><b>CT</b></span>
+            <span><small>MESH SAMPLING</small><b>0.9 MM</b></span>
+          </div>
+        </section>
+
+        <section class="data-block controls">
+          <p class="section-kicker">VISIBLE LAYERS</p>
+          <label class="toggle-row"><span><i class="swatch bone"></i>骨组织</span><input id="boneToggle" type="checkbox" checked/><b></b></label>
+          <label class="toggle-row"><span><i class="swatch soft"></i>软组织外壳</span><input id="softToggle" type="checkbox" checked/><b></b></label>
+          <label class="toggle-row"><span><i class="swatch loci"></i>双侧关节标记</span><input id="jointToggle" type="checkbox" checked/><b></b></label>
+          <label class="toggle-row"><span><i class="swatch scan"></i>动态扫描平面</span><input id="scanToggle" type="checkbox" checked/><b></b></label>
+          <div class="range-row">
+            <span>SOFT TISSUE OPACITY</span><output id="opacityValue">18%</output>
+            <input id="opacityRange" type="range" min="0" max="55" value="18"/>
+          </div>
+        </section>
+
+        <section class="data-block findings">
+          <p class="section-kicker">ANNOTATED LOCI</p>
+          <button class="finding" type="button" data-view="right"><em>R</em><span><b>RIGHT TMJ</b><small>髁突与关节窝区域</small></span><i>→</i></button>
+          <button class="finding" type="button" data-view="left"><em>L</em><span><b>LEFT TMJ</b><small>髁突与关节窝区域</small></span><i>→</i></button>
+        </section>
+
+        <p class="disclaimer">VISUAL RECONSTRUCTION ONLY<br/>非诊断级模型 · 颅顶受扫描范围截断<br/>经降采样、阈值分割与平滑；关节标记仅作示意，不用于精确测量或判断关节盘。请医生结合原始 CT / MR 与正式报告评估。</p>
+      </aside>
+
+      <footer class="command-bar">
+        <div class="command-group views" role="group" aria-label="观察视角">
+          <span>VIEW</span>
+          <button type="button" class="active" data-view="front">正面 <kbd>1</kbd></button>
+          <button type="button" data-view="left">左侧 <kbd>2</kbd></button>
+          <button type="button" data-view="right">右侧 <kbd>3</kbd></button>
+          <button type="button" data-view="axial">轴位 <kbd>4</kbd></button>
+        </div>
+        <div class="command-group actions">
+          <button id="autoRotate" type="button"><span class="status-dot"></span>自动旋转</button>
+          <button id="explode" type="button">分层展开</button>
+          <button id="resetView" class="primary" type="button">复位视角 <kbd>R</kbd></button>
+        </div>
+      </footer>
+
+      <div id="toast" class="toast" role="status"></div>
+    </main>
+
+  </body>
+</html>
